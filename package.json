@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "db:seed": "node scripts/seed.js",
-    "postinstall": "prisma generate || true"
+    "postinstall": "prisma generate || echo 'Prisma generate skipped - DATABASE_URL not set'"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

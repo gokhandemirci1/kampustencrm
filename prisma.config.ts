@@ -3,12 +3,15 @@
 import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 
+// DATABASE_URL yoksa dummy PostgreSQL URL kullan (Prisma generate için yeterli)
+const databaseUrl = process.env.DATABASE_URL || "postgresql://dummy:dummy@localhost:5432/dummy?schema=public";
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: env("DATABASE_URL", "file:./dev.db"), // Fallback to SQLite for local dev
+    url: databaseUrl,
   },
 });
