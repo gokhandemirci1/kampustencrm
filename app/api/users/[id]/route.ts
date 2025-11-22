@@ -17,7 +17,7 @@ const updateUserSchema = z.object({
 
 export async function PATCH(
   request: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth()
@@ -25,7 +25,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'Yetkisiz erişim' }, { status: 403 })
     }
 
-    const { id } = await context.params
+    const { id } = await params
     const body = await request.json()
     const data = updateUserSchema.parse(body)
 
@@ -83,7 +83,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth()
@@ -91,7 +91,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Yetkisiz erişim' }, { status: 403 })
     }
 
-    const { id } = await context.params
+    const { id } = await params
 
     // Kullanıcıyı bul
     const user = await prisma.user.findUnique({
