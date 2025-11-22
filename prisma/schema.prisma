@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  // Yetkiler
+  canManageCustomers      Boolean @default(false)
+  canManageFinancial      Boolean @default(false)
+  canManageCollaborationCodes Boolean @default(false)
+  canViewCollaborationStats   Boolean @default(false)
+  canManageAccess        Boolean @default(false)
+  canDeleteUsers         Boolean @default(false) // gokhan ve emre dışındakileri silebilir
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Customer {
+  id            String   @id @default(cuid())
+  name          String
+  surname       String
+  phone         String
+  email         String
+  grade         String   // Kaçıncı sınıf
+  camps         String   // Satın aldığı kamplar (JSON string veya comma separated)
+  prices        String   // Fiyatlar (JSON string veya comma separated)
+  code          String?  // İşbirliği kodu (opsiyonel)
+  previousRank  String?  // Önceki YKS derecesi (opsiyonel)
+  city          String
+  isDeleted     Boolean  @default(false) // Silme işlemi için
+  deletedReason String?  // Silme nedeni
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([code])
+  @@index([email])
+}
+
+model CollaborationCode {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
