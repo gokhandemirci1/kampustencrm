@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth()
@@ -12,7 +12,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Yetkisiz erişim' }, { status: 403 })
     }
 
-    const { id } = await params
+    const { id } = await context.params
     const { searchParams } = new URL(request.url)
     const reason = searchParams.get('reason') || 'Ödeme alınmadı'
 
